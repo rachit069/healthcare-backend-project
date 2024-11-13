@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 //After successful regester of user, and then calling the login endpoint with the already regestered user, It will create and return JWT Token
-// const generateJwtToken = (user) => {
-//   return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: 400000 });
-// };
+const generateJwtToken = (user) => {
+  return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: 400000 });
+};
 
 //After login, we are getting the token, and for validating the JWT Token, that it is correct or not,, we will proceed with secure routes, to GET/POST/UPDATE/DELETE.
 const validateJwtToken = (req, res, next) => {
@@ -22,4 +22,4 @@ const validateJwtToken = (req, res, next) => {
   }
 };
 
-module.exports = {validateJwtToken };
+module.exports = { generateJwtToken, validateJwtToken };

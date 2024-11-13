@@ -8,7 +8,7 @@ const {validateJwtToken,} = require("../middlewares/jwtMiddleware");
 
 // Register a new user
 router.post("/register", registerUser);
-router.post("/login", loginUser);
+router.post("/login", validateJwtToken, loginUser);
 router.get("/myaccount", validateJwtToken, getUserProfile);
 router.patch("/myaccount", validateJwtToken, updateUserProfile);
 

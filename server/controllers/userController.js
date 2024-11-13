@@ -2,11 +2,11 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-// const {generateJwtToken} = require("../middlewares/jwtMiddleware");
+const {generateJwtToken} = require("../middlewares/jwtMiddleware");
 require("dotenv").config();
-const generateJwtToken = (user) => {
-  return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: 400000 });
-};
+// const generateJwtToken = (user) => {
+//   return jwt.sign(user, process.env.PRIVATE_KEY, { expiresIn: 400000 });
+// };
 
 const registerUser = asyncHandler(async (req, res) => {
   const {
@@ -58,6 +58,16 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   console.log("New User:", newUser);
 
+  const token = generateJwtToken({
+    id: newUser._id,
+    name: newUser.name,
+    email: newUser.email,
+    specialty: newUser.specialty,
+    phoneNumber: newUser.phoneNumber,
+    experience: newUser.experience,
+    address: newUser.address,
+  });
+
   // Send success response
   res
     .status(201)
@@ -86,18 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "password did not match" });
   }
 
-  const token = generateJwtToken({
-    id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phoneNumber: user.phoneNumber,
-    bloodGroup: user.bloodGroup,
-    age: user.age,
-    gender: user.gender,
-  });
-  console.log(token)
-  res.status(200).json({ message: "Login successfully", token: token });
+  res.status(200).json({ message: "Login successfully", user});
 });
 
 const getUserProfile = asyncHandler(async (req, res) => {
