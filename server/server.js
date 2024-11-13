@@ -97,6 +97,7 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
+console.log(process.env.PRIVATE_KEY);
 
 // App Config
 
